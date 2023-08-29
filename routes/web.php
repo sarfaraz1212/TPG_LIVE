@@ -70,6 +70,12 @@ Route::prefix('admin')->group(function()
         Route::get('/ajax/getfee', [AdminpackageController::class, 'get_fee'])->name('get.fee');
         Route::get('/package', [AdminpackageController::class, 'list'])->name('view.packagelist');
 
+        Route::get('/package/edit/{id}', [AdminpackageController::class, 'view_edit'])->name('view.package-edit');
+        Route::post('/package/edit/{id}', [AdminpackageController::class, 'edit_package'])->name('create.package-edit');
+
+        Route::get('/package/delete/{id}', [AdminpackageController::class, 'delete_package'])->name('create.package-delete');
+       
+
 
         //===================================================ADMIN CLIENT ROUTES========================================================
         

@@ -67,6 +67,63 @@ class AdminpackageController extends Controller
         $packages = Packages::all();
         return view('backend.admin.packages.list',['packages'=>$packages]);
     }
+
+    public function view_edit($id)
+    {
+        $package =  Packages::find($id);
+
+        return view('backend.admin.packages.edit',['package'=>$package]);
+    }
+
+    public function edit_package(Request $request,$id)
+    {
+        $package = Packages::find($id);
+        if($package)
+        {
+            $package->package_name     = $request->packagename;
+            $package->package_duration = $request->packageduration;
+            $package->package_price    = $request->packageprice; 
+            
+            if($package->save())
+            {
+                session()->flash('success','Package Updated Successfully!');
+                return redirect()->route('view.packagelist');
+            }
+            else
+            {
+                session()->flash('error','Error! Please try again later');
+                return redirect()->route('view.packagelist');
+            }
+        }
+        else
+        {
+            echo "404 not found";
+        }
+       
+    }
+
+    public function delete_package($id)
+    {
+        $package = Packages::find($id);
+
+        if($package)
+        {
+            if($package->delete())
+            {
+                session()->flash('success','Package Deleted Successfully!');
+                return redirect()->route('view.packagelist');
+            }
+            else
+            {
+                session()->flash('error','Error! Please try again later');
+                return redirect()->route('view.packagelist');
+            }
+        }
+        else
+        {
+            echo "Not Found";
+        }
+    }
     
 
  

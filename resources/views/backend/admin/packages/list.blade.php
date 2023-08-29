@@ -34,8 +34,8 @@
               <td>{{ $package->package_price }}</td>
               <td>
                 <div class="d-flex">
-                    <button class="btn btn-success">Edit</button>
-                    <button class="ms-1 btn btn-danger">Delete</button>
+                    <a href="{{ route('view.package-edit',['id' => $package->id ]) }}" class="btn btn-success">Edit</a>
+                    <a href="{{ route('create.package-delete',['id' => $package->id]) }}"class="ms-1 btn btn-danger">Delete</a>
                 </div>
               </td>
             </tr>   

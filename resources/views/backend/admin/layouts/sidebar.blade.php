@@ -2,9 +2,8 @@
     <!-- Sidebar scroll-->
     <div>
       <div class="brand-logo d-flex align-items-center justify-content-between">
-        <a href="./index.html" class="text-nowrap logo-img">
-            
-          <img src="{{ asset('backend/admin/images/logos/dark-logo.svg')}}" width="180" alt="" />
+        <a href="./index.html" class="text-nowrap logo-img">  
+          <h4 class="mt-5 mb-5" style="font-weight: 700;">The Physique Gym</h4>
         </a>
         <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
           <i class="ti ti-x fs-8"></i>
