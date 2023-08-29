@@ -8,6 +8,10 @@ use App\Http\Controllers\backend\admin\AdminTrainerController;
 use App\Http\Controllers\backend\admin\AdminAuthController;
 use App\Http\Controllers\backend\admin\AdminpackageController;
 
+use App\Http\Controllers\backend\trainer\TrainerAuthController;
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +35,6 @@ Route::get('/feature',[HomeController::class,'viewfeature'])->name('view.feature
 // ============================== Admin routes ================================
 Route::prefix('admin')->group(function()
 {
-
     Route::get('/register',[AdminAuthController::class,'viewregister'])->name('view.register');
     Route::post('/register',[AdminAuthController::class,'register'])->name('create.register');
  
@@ -74,9 +77,6 @@ Route::prefix('admin')->group(function()
         Route::post('/package/edit/{id}', [AdminpackageController::class, 'edit_package'])->name('create.package-edit');
 
         Route::get('/package/delete/{id}', [AdminpackageController::class, 'delete_package'])->name('create.package-delete');
-       
-
-
         //===================================================ADMIN CLIENT ROUTES========================================================
         
         Route::get('/add-client', [AdminClientsController::class, 'view_add_client'])->name('view.addclient');
@@ -89,17 +89,15 @@ Route::prefix('admin')->group(function()
         Route::get('/non-verified/clients', [AdminClientsController::class, 'view_non_verfified_clients'])->name('view.non_verfified_clients');
         Route::get('/verify-email/{token}', [AdminClientsController::class, 'client_verify_email'])->name('create.client_verify');
 
-         Route::post('client/re-verify-email', [AdminClientsController::class, 're_verify_client'])->name('create.client_re_verify');
-
-        
-
+        Route::post('client/re-verify-email', [AdminClientsController::class, 're_verify_client'])->name('create.client_re_verify');
     });
 
-//============================== Admin routes ================================
+});
 
-
-       
-    
-  
+// ============================== Trainer routes ================================
+Route::prefix('trainer')->group(function()
+{
+   Route::get('/login',[TrainerAuthController::class,'view_login']);
+   Route::post('/login',[TrainerAuthController::class,'login'])->name('create.trainer-login');
 });
 
