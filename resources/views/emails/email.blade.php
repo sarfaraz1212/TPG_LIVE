@@ -15,7 +15,7 @@
         <div style="padding: 20px;">
             <p style="font-size: 16px; line-height: 1.8;">Dear {{$name}},</p>
             <p style="font-size: 16px; line-height: 1.8;">Thank you for signing up with our website. To complete your registration, please click the link below to verify your email address:</p>
-            <a href="{{ route('create.trainer_verify', ['token' => $token]) }}" style="display: block; border-color: #007bff; color: black; text-decoration: none; padding: 12px 20px; font-size: 18px; font-weight: bold; letter-spacing: 1px; text-align: center; margin-bottom: 20px; transition: background-color 0.3s ease;">Click here to verify</a>
+            <a href="{{route('create.trainer_verify',['token' =>$token])}}" style="display: block; border-color: #007bff; color: black; text-decoration: none; padding: 12px 20px; font-size: 18px; font-weight: bold; letter-spacing: 1px; text-align: center; margin-bottom: 20px; transition: background-color 0.3s ease;">Click here to verify</a>
             <p style="font-size: 16px; line-height: 1.8;">If you did not sign up for an account, please ignore this email.</p>
             <div style="text-align: right; font-style: italic; font-size: 14px; margin-top: 20px;">
                 <p>Best regards,</p>

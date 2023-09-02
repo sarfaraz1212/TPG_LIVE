@@ -9,6 +9,7 @@ use App\Http\Controllers\backend\admin\AdminAuthController;
 use App\Http\Controllers\backend\admin\AdminpackageController;
 
 use App\Http\Controllers\backend\trainer\TrainerAuthController;
+use App\Http\Controllers\backend\trainer\TrainerClientController;
 
 
 
@@ -62,7 +63,7 @@ Route::prefix('admin')->group(function()
 
         Route::get('/trainers', [AdminTrainerController::class, 'view_trainers_list'])->name('view.trainers_list');
         Route::get('/non-verified/trainers', [AdminTrainerController::class, 'view_non_verfified_trainers'])->name('view.non_verfified_trainers');
-        Route::get('/verify-email/{token}', [AdminTrainerController::class, 'trainer_verify_email'])->name('create.trainer_verify');
+        Route::get('trainer/verify-email/{token}', [AdminTrainerController::class, 'trainer_verify_email'])->name('create.trainer_verify');
         Route::post('/re-verify-email', [AdminTrainerController::class, 're_trainer_verify_email'])->name('create.trainer_re_verify');
 
         //===================================================ADMIN PACKAGE ROUTES========================================================
@@ -97,7 +98,25 @@ Route::prefix('admin')->group(function()
 // ============================== Trainer routes ================================
 Route::prefix('trainer')->group(function()
 {
-   Route::get('/login',[TrainerAuthController::class,'view_login']);
+   Route::get('/login',[TrainerAuthController::class,'view_login'])->name('view.trainer-login');
    Route::post('/login',[TrainerAuthController::class,'login'])->name('create.trainer-login');
+
+   Route::middleware(['trainer.auth'])->group(function() 
+   {
+    Route::get('/dashboard', [TrainerAuthController::class, 'view_dashboard'])->name('view.trainer-dashboard');
+    Route::get('/logout', [TrainerAuthController::class, 'logout'])->name('create.trainer-logout');
+
+    Route::get('/my-clients', [TrainerClientController::class, 'my_clients'])->name('view.my-clients');
+    Route::get('/my-client/{id}', [TrainerClientController::class, 'get_client'])->name('view.client');
+
+    Route::get('/add-diet/{id}', [TrainerClientController::class, 'add_diet'])->name('create.diet');
+
+    Route::get('/get-calories', [TrainerClientController::class, 'get_calories'])->name('create.calories');
+    Route::post('/save-diet', [TrainerClientController::class, 'save_diet'])->name('save.diet');
+    
+    
+   });
+
+   
 });
 

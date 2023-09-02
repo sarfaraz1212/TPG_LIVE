@@ -7,26 +7,26 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Auth;
 
-class AdminMiddleware
+class TrainerMiddleware
 {
     /**
      * Handle an incoming request.
+     *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
 
-        if(Auth::guard('admin')->check())
+        if(Auth::guard('trainer')->check())
         {
-            $user = Auth::guard('admin')->user();
+            $user = Auth::guard('trainer')->user();
             
-            if($user->role == 'A')
+            if($user->role == 'T')
             {
                 return $next($request); 
             }
-
+            
         }
-        return redirect()->route('view.login');
-        
+        return redirect()->route('view.trainer-login');
     }
 }

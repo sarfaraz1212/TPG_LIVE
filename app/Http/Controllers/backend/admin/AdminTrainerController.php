@@ -75,7 +75,7 @@ class AdminTrainerController extends Controller
                 $trainer->name              = $request->name;
                 $trainer->email             = $request->email;
                 $trainer->dob               = $request->dob;
-                $trainer->password          = $request->password;
+                $trainer->password          = Hash::make($request->password);
                 $trainer->contact           = $request->contact;
                 $trainer->address           = $request->address;
                 $trainer->body_weight       = $request->bodyweight;
@@ -221,9 +221,10 @@ class AdminTrainerController extends Controller
 
     public function re_trainer_verify_email(Request $request)
     {
+     
         $check = DB::table('verifications_tokens')->where('email', $request->email)->first();
         $token = Str::random(10);
-        $expiration = Carbon::now()->addMinutes(60);
+        $expiration = Carbon::now()->addMinutes(5);
 
         if (!$check) {
             // Create a new verification token if it doesn't exist

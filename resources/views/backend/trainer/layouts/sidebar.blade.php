@@ -35,9 +35,7 @@
                 </h2>
                 <div id="addClientCollapse" class="accordion-collapse collapse" aria-labelledby="clientsHeading" data-bs-parent="#clientsAccordion">
                     <div class="accordion-body">
-                        <a class="dropdown-item p-1" href="{{ route('view.addclient') }}" style="color:black;">Add</a>
-                        <a class="dropdown-item p-1" href="{{ route('view.clients') }}" style="color:black;">List</a>
-                        <a class="dropdown-item p-1" href="{{ route('view.non_verfified_clients') }}" style="color:black;">Not verified</a>
+                        <a class="dropdown-item p-1" href="{{ route('view.my-clients') }}" style="color:black;">My Clients</a>
                         <!-- Add more accordion items if needed -->
                     </div>
                 </div>
