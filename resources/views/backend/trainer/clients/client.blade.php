@@ -99,19 +99,24 @@
 
         <div class="row">
             <div class="col-3">
-                <a href="{{ route('create.diet',['id' => $client->id]) }}"><button class="btn btn-primary btn-block w-100">Add Diet</button></a>
+                
+                @if(isset($diet_set) && $diet_set == '1' || session()->get('diet_set') == '1')
+                    <a href="{{ route('view.edit-diet',['id' => $client->id]) }}"><button class="btn btn-primary btn-block w-100">Edit Diet</button></a>
+                @else
+                    <a href="{{ route('create.diet',['id' => $client->id]) }}"><button class="btn btn-primary btn-block w-100">Add Diet</button></a>
+                @endif
             </div>
 
             <div class="col-3">
-                <button class="btn btn-primary btn-block w-100">Add Workout</button>
+               <a href="{{ route('create.workout',['id' => $client->id ]) }}"> <button class="btn btn-primary btn-block w-100">Add Workout</button></a>
             </div>
 
             <div class="col-3">
-                <button class="btn btn-dark btn-block w-100">Progress Tracker</button>
+                <button class="btn btn-dark btn-block w-100">Coming soon</button>
             </div>
 
             <div class="col-3">
-                <button class="btn btn-dark btn-block w-100">Report</button>
+                <button class="btn btn-dark btn-block w-100">Coming soon</button>
             </div>
         </div>
        

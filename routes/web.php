@@ -11,6 +11,10 @@ use App\Http\Controllers\backend\admin\AdminpackageController;
 use App\Http\Controllers\backend\trainer\TrainerAuthController;
 use App\Http\Controllers\backend\trainer\TrainerClientController;
 
+use App\Http\Controllers\backend\client\ClientAuthController;
+use App\Http\Controllers\backend\client\ClientDietController;
+
+
 
 
 
@@ -110,13 +114,37 @@ Route::prefix('trainer')->group(function()
     Route::get('/my-client/{id}', [TrainerClientController::class, 'get_client'])->name('view.client');
 
     Route::get('/add-diet/{id}', [TrainerClientController::class, 'add_diet'])->name('create.diet');
+    Route::get('/edit-diet/{id}', [TrainerClientController::class, 'view_edit_diet'])->name('view.edit-diet');
+    Route::post('/edit-diet/{id}', [TrainerClientController::class, 'edit_diet'])->name('edit.diet');
+    Route::get('/delete-diet/{id}', [TrainerClientController::class, 'delete_diet'])->name('delete.diet');
 
     Route::get('/get-calories', [TrainerClientController::class, 'get_calories'])->name('create.calories');
-    Route::post('/save-diet', [TrainerClientController::class, 'save_diet'])->name('save.diet');
+    Route::post('/save-diet/{id}', [TrainerClientController::class, 'save_diet'])->name('save.diet');
+
+    Route::get('/add-workout/{id}',[TrainerClientController::class,'make_workout'])->name('create.workout');
+    Route::post('/add-workout/{id}',[TrainerClientController::class,'add_workout'])->name('save.workout');
     
     
    });
 
    
 });
+
+// ============================== Trainer routes ================================
+Route::prefix('client')->group(function()
+{
+   Route::get('/login',[ClientAuthController::class,'view_login'])->name('view.client-login');
+   Route::post('/login',[ClientAuthController::class,'login'])->name('create.client-login');
+
+   Route::middleware(['client.auth'])->group(function()
+   {
+    Route::get('/dashboard',[ClientAuthController::class,'view_dashboard'])->name('view.client-dashboard');
+    Route::get('/logout', [ClientAuthController::class, 'logout'])->name('create.client-logout');
+    Route::get('/my-diets', [ClientDietController::class, 'view'])->name('view.client-diets');
+    
+   });
+  
+});
+
+
 

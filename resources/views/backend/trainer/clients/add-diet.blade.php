@@ -19,7 +19,7 @@
         
       
         <div class="box">
-            <form action="{{ route('save.diet') }}" method="POST">
+            <form action="{{ route('save.diet',['id' => $client->id]) }}" method="POST">
                 @csrf
                 <input type="hidden" name="client_id" value="{{$client->id}}">
                 <div class="row mt-4 meal-row">
@@ -110,7 +110,7 @@
 
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary mt-2 d-flex justify-content-end">Submit</button>
+                          <button type="submit" class="btn btn-primary d-flex justify-content-end">Submit</button>
                         </div>
 
                       </div>
