@@ -124,81 +124,73 @@
     
     <script>
         $(document).ready(function () {
-            
-            var mealCounter = 1; // Initialize the meal counter
-    
-            // Add row
-            $('.add-row').on('click', function (e) {
-                e.preventDefault();
-    
-                // Clone the first row
-                var newRow = $('.meal-row:first').clone();
-    
-                // Increment the meal counter and update the label
-                mealCounter++;
-                newRow.find('.meal-label').text('Meal ' + mealCounter);
-    
-                // Clear input values in the cloned row
-                newRow.find('input[type="text"]').val('');
-    
-                // Show the delete button for the new row
-                newRow.find('.remove-row').show();
-    
-                // Append the cloned row after the last meal-row
-                $('.meal-row:last').after(newRow);
+        var mealCounter = 1; // Initialize the meal counter
+
+        // Add row
+        $('.add-row').on('click', function (e) {
+            e.preventDefault();
+
+            // Clone the first row
+            var newRow = $('.meal-row:first').clone();
+
+            // Increment the meal counter and update the label
+            mealCounter++;
+            newRow.find('.meal-label').text('Meal ' + mealCounter);
+
+            // Clear input values in the cloned row
+            newRow.find('input[type="text"]').val('');
+
+            // Show the delete button for the new row
+            newRow.find('.remove-row').show();
+
+            // Append the cloned row after the last meal-row
+            $('.meal-row:last').after(newRow);
+        });
+
+        // Remove row
+        $('.box').on('click', '.remove-row', function (e) {
+            e.preventDefault();
+
+            // Remove the clicked row
+            $(this).closest('.meal-row').remove();
+
+            // Update meal numbers for all remaining rows
+            $('.meal-row').each(function (index) {
+                $(this).find('.meal-label').text('Meal ' + (index + 1));
             });
-    
-            // Remove row
-            $('.box').on('click', '.remove-row', function (e) {
-                e.preventDefault();
-    
-                // Remove the clicked row
-                $(this).closest('.meal-row').remove();
-    
-                // Update meal numbers for all remaining rows
-                $('.meal-row').each(function (index) {
-                    $(this).find('.meal-label').text('Meal ' + (index + 1));
-                });
-    
-                mealCounter--; // Decrement the meal counter
-            });
+
+            mealCounter--; // Decrement the meal counter
         });
 
         $('.box').on('change', 'input.form-control', function () {
-           var meal = $(this).val();
-           var row = $(this).closest('.meal-row');
-           $.ajax({
-            url: '{{route('create.calories')}}',
-            type:"GET",
-            data:
-            {
-                meal:meal,
-            },
-            success:function(response)
-            {
-                var protein  = 0;
-                var carbs    = 0;
-                var calories = 0;
-                var fats     = 0;
+            var meal = $(this).val();
+            var row = $(this).closest('.meal-row');
+            $.ajax({
+                url: '{{route('create.calories')}}',
+                type: "GET",
+                data: {
+                    meal: meal,
+                },
+                success: function (response) {
+                    var protein = 0;
+                    var carbs = 0;
+                    var calories = 0;
+                    var fats = 0;
 
-                const numberOfRecords = response.length;
-                for (let i = 0; i < numberOfRecords; i++) 
-                {
-                    calories += response[i].calories;
-                    protein  += response[i].protein_g;
-                    carbs    += response[i].carbohydrates_total_g;
-                    fats     += response[i].fat_total_g;
+                    const numberOfRecords = response.length;
+                    for (let i = 0; i < numberOfRecords; i++) {
+                        calories += response[i].calories;
+                        protein += response[i].protein_g;
+                        carbs += response[i].carbohydrates_total_g;
+                        fats += response[i].fat_total_g;
+                    }
+
+                    row.find('input[name="protein[]"]').val(protein);
+                    row.find('input[name="carbs[]"]').val(carbs);
+                    row.find('input[name="fats[]"]').val(fats);
+                    row.find('input[name="calories[]"]').val(calories);
                 }
-
-                row.find('input[name="protein[]"]').val(protein);
-                row.find('input[name="carbs[]"]').val(carbs);
-                row.find('input[name="fats[]"]').val(fats);
-                row.find('input[name="calories[]"]').val(calories);
-                
-            }
-           });
-
-
+            });
         });
 
         $('.box').on('keydown', 'input.form-control', function (e) {
@@ -207,39 +199,36 @@
                 return false;
             }
         });
-    </script>
 
-    <script>
-            $('#exampleModal').on('show.bs.modal', function () 
-            {
-             calculateTotalsForModal();
+        $('#exampleModal').on('show.bs.modal', function () {
+            calculateTotalsForModal();
+        });
+
+        function calculateTotalsForModal() {
+            var totalProtein = 0;
+            var totalCarbs = 0;
+            var totalFats = 0;
+            var totalCalories = 0;
+
+            $('.meal-row').each(function () {
+                var protein = parseFloat($(this).find('input[name="protein[]"]').val()) || 0;
+                var carbs = parseFloat($(this).find('input[name="carbs[]"]').val()) || 0;
+                var fats = parseFloat($(this).find('input[name="fats[]"]').val()) || 0;
+                var calories = parseFloat($(this).find('input[name="calories[]"]').val()) || 0;
+
+                totalProtein += protein;
+                totalCarbs += carbs;
+                totalFats += fats;
+                totalCalories += calories;
             });
 
-            function calculateTotalsForModal() {
-                var totalProtein = 0;
-                var totalCarbs = 0;
-                var totalFats = 0;
-                var totalCalories = 0;
-
-                $('.meal-row').each(function () 
-                {
-                    var protein = parseFloat($(this).find('input[name="protein[]"]').val()) || 0;
-                    var carbs = parseFloat($(this).find('input[name="carbs[]"]').val()) || 0;
-                    var fats = parseFloat($(this).find('input[name="fats[]"]').val()) || 0;
-                    var calories = parseFloat($(this).find('input[name="calories[]"]').val()) || 0;
-
-                    totalProtein += protein;
-                    totalCarbs += carbs;
-                    totalFats += fats;
-                    totalCalories += calories;
-                });
-
-                // Update the modal content
-                $('#total_protein').val(totalProtein.toFixed(2));
-                $('#total_carbs').val(totalCarbs.toFixed(2));
-                $('#total_fats').val(totalFats.toFixed(2));
-                $('#total_calories').val(totalCalories.toFixed(2));
-            }
+            // Update the modal content
+            $('#total_protein').val(totalProtein.toFixed(2));
+            $('#total_carbs').val(totalCarbs.toFixed(2));
+            $('#total_fats').val(totalFats.toFixed(2));
+            $('#total_calories').val(totalCalories.toFixed(2));
+        }
+    });
 
     </script>
 

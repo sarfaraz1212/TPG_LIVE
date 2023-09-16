@@ -16,30 +16,46 @@
             <h1>Add Workout</h1>
         </div>
 
-        <div class="container">
-            <div class="days mt-5">
-                <h3>Select Days</h3>
-            </div>
-            <div class="box d-flex">
-                @foreach($daysOfWeek as $day)
-                    <label><input type="checkbox" style="font-size:18px;" class="ms-4 days form-check-input me-1" name="days[]" value="{{$day}}">{{$day}}</label><br>
-                @endforeach   
-            </div>
-        
-            <form action="{{ route('save.workout', ['id' => $client->id]) }}" method="POST">
-                @csrf
-                <div class="workout" id="workoutDiv">
-                
-                </div>
+       
 
-                <button type="submit">Submit</button>
-            </form>
-            
+        <div class="container">
+            <div class="row">
+                <form action="{{ route('save.workout', ['id' => $client->id]) }}" method="POST">
+                    @csrf
+                    <div class="container">
+                        <div class="days mt-5">
+                            <h3>Select Days</h3>
+                        </div>
+                        <div class="box d-flex">
+                            @foreach($daysOfWeek as $day)
+                                <label><input type="checkbox" style="font-size:18px;" class="ms-4 days form-check-input me-1" name="days[]" value="{{$day}}">{{$day}}</label><br>
+                            @endforeach   
+                        </div>
+                    </div>
+                    
+                    <div class="workout" id="workoutDiv">
+                    
+                    </div>
+                    
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary mt-3 ms-4"type="submit">Submit</button>
+                    </div>
+                    
+                </form>
+            </div>
         </div>
+       
 
         
 
       </div>
+
+      <script>
+        $(doucment).ready(function()
+        {
+            $(".days").prop('checked', false);
+        });
+      </script>
 
       <script>
         $(document).ready(function() {

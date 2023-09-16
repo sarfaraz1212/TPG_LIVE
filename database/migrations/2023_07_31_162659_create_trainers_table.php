@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('trainers', function (Blueprint $table) {
             $table->id();
+            $table->string('role')->default('T');
             $table->string('trainer_number');
             $table->string('name');
             $table->string('email');
@@ -29,11 +30,11 @@ return new class extends Migration
             $table->string('dob');
             $table->string('salary'); 
             $table->string('medical_condition')->nullable(); 
-            $table->json('programs'); 
-            $table->json('skills'); 
-            $table->json('mode'); 
+            $table->string('programs'); 
+            $table->string('skills'); 
+            $table->string('mode'); 
             $table->enum('verified', [0, 1])->default(0);
-            $table->string('deleted_at');
+            $table->string('deleted_at')->nullable();
             $table->timestamps();
         });
     }

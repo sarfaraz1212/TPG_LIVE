@@ -123,6 +123,8 @@ Route::prefix('trainer')->group(function()
 
     Route::get('/add-workout/{id}',[TrainerClientController::class,'make_workout'])->name('create.workout');
     Route::post('/add-workout/{id}',[TrainerClientController::class,'add_workout'])->name('save.workout');
+
+    Route::get('/edit-workout/{id}',[TrainerClientController::class,'edit_workout'])->name('edit.workout');
     
     
    });

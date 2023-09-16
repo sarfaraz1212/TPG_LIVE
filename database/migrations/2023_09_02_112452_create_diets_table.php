@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('diets', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('client');
+            $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('trainer_id');
             $table->string('meals')->nullable();
             $table->string('protein')->nullable();

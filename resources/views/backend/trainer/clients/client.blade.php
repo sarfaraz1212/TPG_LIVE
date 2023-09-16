@@ -1,3 +1,7 @@
+<?php
+use App\Models\Workout;
+?>
+
 @include('backend.trainer.layouts.navbar')
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -97,19 +101,52 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-3">
-                
-                @if(isset($diet_set) && $diet_set == '1' || session()->get('diet_set') == '1')
-                    <a href="{{ route('view.edit-diet',['id' => $client->id]) }}"><button class="btn btn-primary btn-block w-100">Edit Diet</button></a>
-                @else
-                    <a href="{{ route('create.diet',['id' => $client->id]) }}"><button class="btn btn-primary btn-block w-100">Add Diet</button></a>
-                @endif
-            </div>
+        @php
+            $trainer_id = Auth::guard('trainer')->user()->id;
+            $check_diet = DB::table('diets')->where('client_id', $client->id)->where('trainer_id',$trainer_id)->count();
 
-            <div class="col-3">
-               <a href="{{ route('create.workout',['id' => $client->id ]) }}"> <button class="btn btn-primary btn-block w-100">Add Workout</button></a>
-            </div>
+            $workout = Workout::with('client')->where('client_id', $client->id)->first();
+            if($workout)
+            {
+                if( $trainer_id == $workout->client->assigned_trainer)
+                {
+                    $check_workout = 1;
+                }
+
+                else 
+                {
+                    $check_workout = 0;
+                }
+            }
+            else 
+            {
+                $check_workout = 0;
+            }
+        @endphp
+
+
+        <div class="row">
+            @if( $check_diet == '1' )
+                <div class="col-3">
+                    <a href="{{ route('edit.diet',['id' => $client->id]) }}"><button class="btn btn-primary btn-block w-100">Edit Diet</button></a>
+                </div>
+            @else
+                <div class="col-3">
+                    <a href="{{ route('create.diet',['id' => $client->id]) }}"><button class="btn btn-primary btn-block w-100">Add Diet</button></a>
+                </div>
+            @endif
+          
+            
+            @if($check_workout == '1')
+                <div class="col-3">
+                    <a href="{{ route('edit.workout',['id' => $client->id ]) }}"> <button class="btn btn-primary btn-block w-100">Edit Workout</button></a>
+                </div>
+            @else
+                <div class="col-3">
+                    <a href="{{ route('create.workout',['id' => $client->id ]) }}"> <button class="btn btn-primary btn-block w-100">Add Workout</button></a>
+                </div>
+            @endif
+           
 
             <div class="col-3">
                 <button class="btn btn-dark btn-block w-100">Coming soon</button>

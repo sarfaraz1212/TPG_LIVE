@@ -62,11 +62,11 @@ class AdminTrainerController extends Controller
 
         if($validate->passes())
         { 
-          
+            
         
             $check = Trainers::where('email', $request->email)->orWhere('trainer_number', $request->tnum)->first();
-    
-           
+         
+          
 
             if(!$check)
             {

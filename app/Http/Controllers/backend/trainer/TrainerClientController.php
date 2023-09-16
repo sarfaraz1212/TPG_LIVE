@@ -7,11 +7,18 @@ use Illuminate\Http\Request;
 use App\Models\Clients;
 use App\Models\Trainers;
 use App\Models\Diets;
+use App\Models\Workout;
 use Auth;
 use DB;
 use GuzzleHttp\Client;
 class TrainerClientController extends Controller
 {
+
+    public function view_dashboard()
+    {
+        return view('backend.trainer.dashboard');
+    }
+
     public function my_clients()
     {
         $current_trainer = Auth::guard('trainer')->user()->id;
@@ -34,25 +41,12 @@ class TrainerClientController extends Controller
 
     public function get_client($id)
     {
-        
         $trainer_id = Auth::guard('trainer')->user()->id;
         $client = Clients::where('id', $id)->where('assigned_trainer', $trainer_id)->first();
 
-        if($client)
-        {
-           
-            $diet_set = DB::table('Diets')->where('client_id',$id)->count();
- 
-            if($diet_set == '1')
-            {
-                return view('backend.trainer.clients.client',['client' => $client,'diet_set'=> $diet_set]);
-            }
-                return view('backend.trainer.clients.client',['client' => $client]);
-        }
-        else
-        {
-            echo "Error";
-        }
+        return view('backend.trainer.clients.client', ['client' => $client]);
+
+       
     }
 
     public function add_diet($id)
@@ -139,7 +133,7 @@ class TrainerClientController extends Controller
         }
         else
         {
-            session()->flash('error','Diet for this user already exists');
+            session()->flash('error','Diet for this client already exists');
             return redirect()->back();
         }
 
@@ -148,14 +142,35 @@ class TrainerClientController extends Controller
 
     public function view_edit_diet($id)
     {
-     
+
        $client_id = $id;
-       $diets =  Diets::where('client_id', $id)->get();
-       $get_diet_id = Diets::where('client_id', $id)->first();
-       $diet_id = $get_diet_id->id;
-       
-      
-       return view('backend.trainer.clients.edit-diet', compact('diets', 'client_id','diet_id'));
+
+       if($client_id)
+       {
+            $diets =  Diets::where('client_id', $id)->get();
+            $diet = Diets::where('client_id', $id)->first();
+            if($diet)
+            {
+                $diet_id = $diet->id;
+                $trainer_id = $diet->trainer_id;
+        
+                $current_trainer_id = Auth::guard('trainer')->user()->id;
+        
+                if($trainer_id == $current_trainer_id)
+                {
+                return view('backend.trainer.clients.edit-diet', compact('diets', 'client_id','diet_id'));
+                }
+        
+                else
+                {
+                echo "Error";
+                }
+            }
+            else
+            {
+                echo "Error";
+            }    
+       }
     }
     
     public function edit_diet( Request $request,$id )
@@ -233,6 +248,63 @@ class TrainerClientController extends Controller
 
     public function add_workout(Request $request,$id)
     {
-        print_r($request->all());
+     
+        $check = Workout::where('client_id',$id)->first();
+
+        if(!$check)
+        {   
+            $days          = implode(',',$request->days);
+            $exercise_name = implode(',',$request->exercise_name);
+            $sets          = implode(',',$request->sets);
+            $rep_range     = implode(',',$request->rep_range);
+            $reference     = implode(',',$request->reference);
+            $instructions  = implode(',',$request->instructions);
+
+            $workout                = new Workout();
+            $workout->workout_name  = $exercise_name;
+            $workout->sets          = $sets;
+            $workout->reps          = $rep_range;
+            $workout->reference     = $reference;
+            $workout->instructions  = $instructions;
+            $workout->client_id     = $id;
+
+            $workout_set = 1;
+
+            if($workout->save())
+            {
+                session()->flash('success','Workout Added!');
+                return redirect()->route('view.client',['id' => $id]);
+            }
+            else
+            {
+                session()->flash('error','Error! Please try again');
+                return redirect()->back();
+            }
+        }
+        else
+        {
+            session()->flash('error','Workout for this client already exists!');
+            return redirect()->route('view.client',['id' => $id]);
+        }
+    }
+
+    public function edit_workout($id)
+    {
+        if($id)
+        {
+            $workout = Workout::where('client_id',$id)->first();
+            if($workout)
+            {
+                return $workout;
+            }
+            else
+            {
+                echo "Id not found";
+            }
+        }
+        else
+        {
+            echo "Error";
+        }
     }
 }
