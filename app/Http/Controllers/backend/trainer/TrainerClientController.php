@@ -158,7 +158,7 @@ class TrainerClientController extends Controller
         
                 if($trainer_id == $current_trainer_id)
                 {
-                return view('backend.trainer.clients.edit-diet', compact('diets', 'client_id','diet_id'));
+                    return view('backend.trainer.clients.edit-diet', compact('diets', 'client_id','diet_id'));
                 }
         
                 else
@@ -248,7 +248,7 @@ class TrainerClientController extends Controller
 
     public function add_workout(Request $request,$id)
     {
-     
+        
         $check = Workout::where('client_id',$id)->first();
 
         if(!$check)
@@ -261,6 +261,7 @@ class TrainerClientController extends Controller
             $instructions  = implode(',',$request->instructions);
 
             $workout                = new Workout();
+            $workout->days          = $days;
             $workout->workout_name  = $exercise_name;
             $workout->sets          = $sets;
             $workout->reps          = $rep_range;
@@ -292,11 +293,15 @@ class TrainerClientController extends Controller
     {
         if($id)
         {
-            $workout = Workout::where('client_id',$id)->first();
-            if($workout)
+            $client_id = $id; 
+            $workouts   = Workout::where('client_id',$id)->get();
+
+           
+            if ($workouts) 
             {
-                return $workout;
+                return view('backend.trainer.clients.edit-workout', ['workouts' => $workouts]);
             }
+            
             else
             {
                 echo "Id not found";
