@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 use App\Models\Packages;
+use App\Models\Trainers;
 
 class Clients extends Model implements Authenticatable
 {
     use HasFactory, AuthenticatableTrait;
+    
+
     
     // Implement the required methods from the Authenticatable contract
     
@@ -119,6 +122,11 @@ class Clients extends Model implements Authenticatable
         }
     
         return null; 
+    }
+
+    public function trainer()
+    {
+        return $this->belongsTo(Trainers::class, 'assigned_trainer', 'id');
     }
     
 

@@ -12,166 +12,135 @@
       <!--  Header End -->
       <div class="container-fluid">
         <!--  Row 1 -->
-        <div class="d-flex">
-            <h1>Add Workout</h1>
+        <div class="d-flex justify-content-between">
+            <div>
+                <h1>Add Workout</h1>
+            </div>
+
+            <div>
+                <a href="{{ route('view.client', ['id' => $client->id]) }}">
+                    <button class="btn btn-primary">Back to my client</button>
+                </a>
+            </div>
+
+            
         </div>
 
        
 
         <div class="container">
-            <div class="row">
-                <form action="{{ route('save.workout', ['id' => $client->id]) }}" method="POST">
-                    @csrf
-                    <div class="container">
-                        <div class="days mt-5">
-                            <h3>Select Days</h3>
-                        </div>
-                        <div class="box d-flex">
-                            @foreach($daysOfWeek as $day)
-                                <label><input type="checkbox" style="font-size:18px;" class="ms-4 days form-check-input me-1" name="days[]" value="{{$day}}">{{$day}}</label><br>
-                            @endforeach   
-                        </div>
+            <div class="row mt-5">
+                @foreach($daysOfWeek as $day)
+                <div class="card">
+                    <div class="card-body">
+                        <form method="POST" class="workout-form" >
+                            @csrf
+                            <div class="action-box d-flex">
+                                <div>
+                                    <h3>{{$day}}</h3>
+                                    <input type="hidden" value="{{$day}}" name="day">
+                                    <input type="hidden" value="{{$client->id}}" id="client-id">
+                                </div>
+
+                                <div>
+                                    <button class="form-control btn btn-success ms-2 add-div">+</button>
+                                </div>
+                                
+                            </div>
+
+                            <div class="row mt-3 workout-row">
+                                <div class="col-4">
+                                    <label for="exercise_name">Exercise Name</label>
+                                    <input type="text" id="exercise_name" name="exercise_name[]" class="form-control">
+                                </div>
+    
+                                <div class="col-1">
+                                    <label for="sets">Sets</label>
+                                    <input type="text" id="sets" name="sets[]" class="form-control">
+                                </div>
+    
+                                <div class="col-1">
+                                    <label for="reps">Reps</label>
+                                    <input type="text" id="reps" name="reps[]" class="form-control">
+                                </div>
+    
+                                <div class="col-2">
+                                    <label for="reference">Reference</label>
+                                    <input type="text" id="reference" name="reference[]" class="form-control">
+                                </div>
+    
+                                <div class="col-2">
+                                    <label for="instructions">Instructions</label>
+                                    <input type="text" id="instructions" name="instructions[]" class="form-control">
+                                </div>
+
+                                <div class="col-1 mt-4">
+                                    <button class="form-control btn btn-danger remove-div" disabled>-</button>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2 d-flex justify-content-end">
+                                <div class="col-3 d-flex justify-content-end ">
+                                    <button type="submit" class=" btn btn-success submit-workout">Add</button>
+                                </div>
+                               
+                            </div>
+                        </form>
                     </div>
-                    
-                    <div class="workout" id="workoutDiv">
-                    
-                    </div>
-                    
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary mt-3 ms-4"type="submit">Submit</button>
-                    </div>
-                    
-                </form>
+                </div>
+                @endforeach    
             </div>
         </div>
-       
-
-        
-
       </div>
 
       <script>
-        $(doucment).ready(function()
-        {
-            $(".days").prop('checked', false);
-        });
-      </script>
+       $(document).ready(function () 
+       {
+            $('.add-div').on('click', function (e) {
+                e.preventDefault();
+                var cardBody = $(this).closest('.card-body');
+                var firstWorkoutRow = cardBody.find('.workout-row:first');
+                var clonedRow = firstWorkoutRow.clone();
+                cardBody.find('.workout-row:last').after(clonedRow);
+                clonedRow.find('.remove-div').prop('disabled', false);
+            });
 
-      <script>
-        $(document).ready(function() {
-            var selectedDays = []; // Array to store selected days and their respective card containers
-    
-            $(".days").on('change', function() {
-                var $this = $(this);
-                var selectedDay = $this.val();
-    
-                if ($this.is(':checked')) {
-                    // Create a new card and add it to the workoutDiv
-                    var exerciseCard = $("<div class='card mt-3'>" +
-                        "<div class='card-body'>" +
-                            "<div class='row'>" +
-                                "<div class='col-9 d-flex'>" +
-                                    "<h3 class='card-title'>" + selectedDay + "</h3>" +
-                                    "<button style='font-size:10px;' class='ms-2 btn btn-success btn-add-row'>+</button>" +
-                                "</div>" +
-                            "</div>" +
-                            "<div class='exercise-row'>" +
-                                "<div class='row'>" +
-                                    "<div class='col-2'>" +
-                                        "<label>Exercise Name</label>" +
-                                        "<input type='text' class='form-control' name='exercise_name[]'>" + // Add name attribute
-                                    "</div>" +
-                                    "<div class='col-2'>" +
-                                        "<label>Sets</label>" +
-                                        "<input type='text' class='form-control' name='sets[]'>" + // Add name attribute
-                                    "</div>" +
-                                    "<div class='col-2'>" +
-                                        "<label>Rep Range</label>" +
-                                        "<input type='text' class='form-control' name='rep_range[]'>" + // Add name attribute
-                                    "</div>" +
-                                    "<div class='col-2'>" +
-                                        "<label>Reference</label>" +
-                                        "<input type='text' class='form-control' name='reference[]'>" + // Add name attribute
-                                    "</div>" +
-                                    "<div class='col-2'>" +
-                                        "<label>Instructions</label>" +
-                                        "<input type='text' class='form-control' name='instructions[]'>" + // Add name attribute
-                                    "</div>" +
-                                "</div>" +
-                            "</div>" +
-                        "</div>" +
-                    "</div>");
-    
-                    $("#workoutDiv").append(exerciseCard);
-    
-                    // Add the selected day and its card container to the array
-                    selectedDays.push({
-                        day: selectedDay,
-                        card: exerciseCard
-                    });
-    
-                    // Enable remove button for the card
-                    exerciseCard.find('.btn-remove-row').prop('disabled', false);
-    
-                    // Add row
-                    exerciseCard.find('.btn-add-row').click(function(event) {
-                        event.preventDefault(); // Prevent form submission
-    
-                        var exerciseRow = $("<div class='row mt-2'>" +
-                            "<div class='col-2'>" +
-                                "<label>Exercise Name</label>" +
-                                "<input type='text' class='form-control' name='exercise_name[]'>" + // Add name attribute
-                            "</div>" +
-                            "<div class='col-2'>" +
-                                "<label>Sets</label>" +
-                                "<input type='text' class='form-control' name='sets[]'>" + // Add name attribute
-                            "</div>" +
-                            "<div class='col-2'>" +
-                                "<label>Rep Range</label>" +
-                                "<input type='text' class='form-control' name='rep_range[]'>" + // Add name attribute
-                            "</div>" +
-                            "<div class='col-2'>" +
-                                "<label>Reference</label>" +
-                                "<input type='text' class='form-control' name='reference[]'>" + // Add name attribute
-                            "</div>" +
-                            "<div class='col-2'>" +
-                                "<label>Instructions</label>" +
-                                "<input type='text' class='form-control' name='instructions[]'>" + // Add name attribute
-                            "</div>" +
-                            "<div class='col-1 mt-4'>" +
-                                "<button class='btn btn-danger btn-remove-row'>-</button>" +
-                            "</div>" +
-                        "</div>");
-    
-                        exerciseCard.find('.exercise-row').append(exerciseRow);
-    
-                        // Enable remove button for the newly added row
-                        exerciseRow.find('.btn-remove-row').prop('disabled', false);
-    
-                        // Remove row
-                        exerciseRow.find('.btn-remove-row').click(function() {
-                            if (exerciseCard.find('.row').length > 1) {
-                                $(this).closest('.row').remove();
-                            }
-                        });
-                    });
-                } else {
-                    // Unchecked a day, remove it from the array and the workoutDiv
-                    selectedDays = selectedDays.filter(function(item) {
-                        if (item.day === selectedDay) {
-                            item.card.remove();
-                            return false;
+            $(document).on('click', '.remove-div', function(e) {
+                e.preventDefault();
+                $(this).closest('.workout-row').remove();
+            });
+
+            $('.workout-form').on('submit', function(e) { // Changed event to submit
+                e.preventDefault();
+                const clientid = $('#client-id').val(); // Find the client ID within this form
+                const formData = $(this).serialize(); 
+
+                $.ajax({
+                    url: "{{ route('save.workout') }}",
+                    type: "POST",
+                    data: {
+                        clientid: clientid,
+                        formData: formData,
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            toastr.success(response.message, 'Success');
                         }
-                        return true;
-                    });
-                }
-    
-                if (selectedDays.length === 0) {
-                    $("#selectedDay").text("Days");
-                }
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
             });
         });
     </script>
+    
+
+      
+
     
     
     

@@ -2,7 +2,7 @@
     <!-- Sidebar scroll-->
     <div>
       <div class="brand-logo d-flex align-items-center justify-content-between">
-        <a href="./index.html" class="text-nowrap logo-img">  
+        <a href="" class="text-nowrap logo-img">  
           <h4 class="mt-5 mb-5" style="font-weight: 700;">The Physique Gym</h4>
         </a>
         <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -40,7 +40,42 @@
                     </div>
                 </div>
             </div>
-        </div>
+          </div>
+
+          <div class="accordion" id="clientsAccordion2">
+              <div class="accordion-item" style="border-style: none;">
+                  <h2 class="accordion-header" id="clientsHeading2">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#addClientCollapse2" aria-expanded="false" aria-controls="addClientCollapse2">
+                          <i class="ti ti-layout-dashboard me-2" style="font-size:15px; color: black;"></i>
+                          <span class="hide-menu" style="font-size:15px; color: black;">Workout</span>
+                      </button>
+                  </h2>
+                  <div id="addClientCollapse2" class="accordion-collapse collapse" aria-labelledby="clientsHeading2" data-bs-parent="#clientsAccordion2">
+                      <div class="accordion-body">
+                          <a class="dropdown-item p-1" href="{{ route('view.client-workout') }}" style="color:black;">view</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="accordion" id="clientsAccordion3">
+              <div class="accordion-item" style="border-style: none;">
+                  <h2 class="accordion-header" id="clientsHeading3">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#addClientCollapse3" aria-expanded="false" aria-controls="addClientCollapse3">
+                          <i class="ti ti-layout-dashboard me-2" style="font-size:15px; color: black;"></i>
+                          <span class="hide-menu" style="font-size:15px; color: black;">Settings</span>
+                      </button>
+                  </h2>
+                  <div id="addClientCollapse3" class="accordion-collapse collapse" aria-labelledby="clientsHeading3" data-bs-parent="#clientsAccordion3">
+                      <div class="accordion-body">
+                          <a class="dropdown-item p-1" href="{{ route('view.client-profile') }}" style="color:black;">My profile</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+
+       
         
           <li class="nav-small-cap">
             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
@@ -55,7 +90,7 @@
           <div class="d-flex">
             <div class="unlimited-access-title me-3">
               <h6 class="fw-semibold fs-4 mb-6 text-dark w-85">Upgrade to pro</h6>
-              <a href="https://adminmart.com/product/modernize-bootstrap-5-admin-template/" target="_blank" class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
+              <a href="https://adminmart.com/product/modernize-bootstrap-5-admin-template/" target="_blank" class="btn btn-primary fs-3 fw-semibold lh-sm">Buy Pro</a>
             </div>
         
           </div>

@@ -10,9 +10,13 @@ use App\Http\Controllers\backend\admin\AdminpackageController;
 
 use App\Http\Controllers\backend\trainer\TrainerAuthController;
 use App\Http\Controllers\backend\trainer\TrainerClientController;
+use App\Http\Controllers\backend\trainer\TrainerSettingsController;
+use App\Http\Controllers\backend\trainer\TrainerTimeslotController;
 
 use App\Http\Controllers\backend\client\ClientAuthController;
 use App\Http\Controllers\backend\client\ClientDietController;
+use App\Http\Controllers\backend\client\ClientWorkoutController;
+use App\Http\Controllers\backend\client\ClientSettingsController;
 
 
 
@@ -105,6 +109,12 @@ Route::prefix('trainer')->group(function()
    Route::get('/login',[TrainerAuthController::class,'view_login'])->name('view.trainer-login');
    Route::post('/login',[TrainerAuthController::class,'login'])->name('create.trainer-login');
 
+ 
+   Route::post('/send-forgot-password-link',[TrainerAuthController::class,'send_link'])->name('create.link');
+
+   Route::get('/reset-password/{token}',[TrainerAuthController::class,'view_reset_password'])->name('view.reset-password');
+   Route::post('/reset-password',[TrainerAuthController::class,'reset_password'])->name('create.reset-password');
+
    Route::middleware(['trainer.auth'])->group(function() 
    {
     Route::get('/dashboard', [TrainerAuthController::class, 'view_dashboard'])->name('view.trainer-dashboard');
@@ -122,27 +132,50 @@ Route::prefix('trainer')->group(function()
     Route::post('/save-diet/{id}', [TrainerClientController::class, 'save_diet'])->name('save.diet');
 
     Route::get('/add-workout/{id}',[TrainerClientController::class,'make_workout'])->name('create.workout');
-    Route::post('/add-workout/{id}',[TrainerClientController::class,'add_workout'])->name('save.workout');
+    Route::post('ajax/add-workout',[TrainerClientController::class,'add_workout'])->name('save.workout');
 
     Route::get('/edit-workout/{id}',[TrainerClientController::class,'edit_workout'])->name('edit.workout');
+
+    Route::get('/ajax/delete-workout',[TrainerClientController::class,'ajax_delete_workout'])->name('delete.ajax-workout');
     
+    Route::get('/my-profile',[TrainerSettingsController::class,'my_profile'])->name('view.my-profile');
+
+    Route::post('/profile-reset-password',[TrainerSettingsController::class,'reset_password'])->name('create.profile-reset-password');
+    Route::post('/update-profile',[TrainerSettingsController::class,'update'])->name('create.profile-update');
+
+    Route::get('/timeslots',[TrainerTimeslotController::class,'index'])->name('view.timeslots');
+    Route::post('/timeslots',[TrainerTimeslotController::class,'add'])->name('save.timeslots');
+
+
     
    });
 
    
 });
 
-// ============================== Trainer routes ================================
+// ============================== Client routes ================================
 Route::prefix('client')->group(function()
 {
    Route::get('/login',[ClientAuthController::class,'view_login'])->name('view.client-login');
    Route::post('/login',[ClientAuthController::class,'login'])->name('create.client-login');
+
+   Route::post('/client-send-forgot-password-link',[ClientAuthController::class,'send_link'])->name('create.client-password-reset-link');
+
+   Route::get('/client-reset-password/{token}',[ClientAuthController::class,'view_reset_password'])->name('view.client-reset-password');
+   Route::post('/client-reset-password',[ClientAuthController::class,'reset_password'])->name('create.client-reset-password');
+
 
    Route::middleware(['client.auth'])->group(function()
    {
     Route::get('/dashboard',[ClientAuthController::class,'view_dashboard'])->name('view.client-dashboard');
     Route::get('/logout', [ClientAuthController::class, 'logout'])->name('create.client-logout');
     Route::get('/my-diets', [ClientDietController::class, 'view'])->name('view.client-diets');
+
+    Route::get('/my-workout', [ClientWorkoutController::class, 'view'])->name('view.client-workout');
+    Route::get('/profile', [ClientSettingsController::class, 'view'])->name('view.client-profile');
+    Route::post('/profile', [ClientSettingsController::class, 'update'])->name('create.client-profile-update');
+
+    Route::post('/client-profile-reset-password', [ClientSettingsController::class, 'reset_password'])->name('create.client-password-update');
     
    });
   

@@ -25,24 +25,49 @@
     
           </li> -->
 
-          <div class="accordion" id="clientsAccordion">
-            <div class="accordion-item" style="border-style: none;">
-                <h2 class="accordion-header" id="clientsHeading">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#addClientCollapse" aria-expanded="false" aria-controls="addClientCollapse">
-                        <i class="ti ti-layout-dashboard me-2" style="font-size:15px; color: black;"></i>
-                        <span class="hide-menu" style="font-size:15px; color: black;">Clients</span>
-                    </button>
-                </h2>
-                <div id="addClientCollapse" class="accordion-collapse collapse" aria-labelledby="clientsHeading" data-bs-parent="#clientsAccordion">
-                    <div class="accordion-body">
-                        <a class="dropdown-item p-1" href="{{ route('view.my-clients') }}" style="color:black;">My Clients</a>
-                        <!-- Add more accordion items if needed -->
-                    </div>
-                </div>
-            </div>
-        </div>
+          <div class="accordion" id="clientsAccordion1">
+              <div class="accordion-item" style="border-style: none;">
+                  <h2 class="accordion-header" id="clientsHeading1">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#addClientCollapse" aria-expanded="false" aria-controls="addClientCollapse">
+                          <i class="ti ti-layout-dashboard me-2" style="font-size:15px; color: black;"></i>
+                          <span class="hide-menu" style="font-size:15px; color: black;">Clients</span>
+                      </button>
+                  </h2>
+                  <div id="addClientCollapse" class="accordion-collapse collapse" aria-labelledby="clientsHeading1" data-bs-parent="#clientsAccordion1">
+                      <div class="accordion-body">
+                          <a class="dropdown-item p-1" href="{{ route('view.my-clients') }}" style="color:black;">My Clients</a>
+                          <!-- Add more accordion items if needed -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="accordion" id="clientsAccordion2">
+              <div class="accordion-item" style="border-style: none;">
+                  <h2 class an="accordion-header" id="clientsHeading2">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#settingsCollapse" aria-expanded="false" aria-controls="settingsCollapse">
+                          <i class="ti ti-layout-dashboard me-2" style="font-size:15px; color: black;"></i>
+                          <span class="hide-menu" style="font-size:15px; color: black;">Settings</span>
+                      </button>
+                  </h2>
+                  <div id="settingsCollapse" class="accordion-collapse collapse" aria-labelledby="clientsHeading2" data-bs-parent="#clientsAccordion2">
+                      <div class="accordion-body">
+                          <a class="dropdown-item p-1" href="{{ route('view.my-profile') }}" style="color:black;">My profile</a>
+                          <!-- Add more accordion items if needed -->
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <a href="{{ route('view.timeslots') }}" class="ms-3" style="font-size: 15px; color: black; text-decoration: none;">
+              <i class="ti ti-layout-dashboard me-2" style="font-size: 15px; color: black;"></i>
+              <span class="hide-menu" style="font-size: 15px; color: black;">Time slots</span>
+          </a>
+
+
+
         
-          <li class="nav-small-cap">
+          <li class="nav-small-cap mt-5">
             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
             <span class="hide-menu">UI COMPONENTS</span>
           </li>

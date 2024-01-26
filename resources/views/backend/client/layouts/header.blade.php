@@ -15,7 +15,7 @@
       </ul>
       <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-          <a href="{{route('create.client-logout')}}" target="_blank" class="">
+          <a href="{{route('create.client-logout')}}" target="" class="">
             <img src="{{ asset('images/other/logout.svg') }}" alt="Logout" style="width: 40px; height: 40px;">
           </a>
         

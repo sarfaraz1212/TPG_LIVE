@@ -235,9 +235,13 @@ class TrainerClientController extends Controller
 
         $client = Clients::select('id')->where('id', $id)->where('assigned_trainer',$trainer_id)->first();
 
+       
+
+
         if ($client) {
+            $workouts = Workout::where('client_id', $id)->get()->isEmpty() ? null : Workout::where('client_id', $id)->get();
             $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday'];
-            return view('backend.trainer.clients.add-workout', compact('client', 'daysOfWeek'));
+            return view('backend.trainer.clients.add-workout', compact('client', 'daysOfWeek', 'workouts'));
         }
         
         else
@@ -246,60 +250,79 @@ class TrainerClientController extends Controller
         }
     }
 
-    public function add_workout(Request $request,$id)
+    public function add_workout(Request $request)
     {
+        $clientID = $request->input('clientid');
+
+        // Get the form data
+        $formData = $request->input('formData');
+    
+        // Parse the form data into an associative array
+        parse_str($formData, $formArray);
+    
+        // Now you can access the form fields like this
+
         
-        $check = Workout::where('client_id',$id)->first();
+        $day           = $formArray['day'];
+        $exerciseNames = implode(',', $formArray['exercise_name']);
+        $sets          = implode(',', $formArray['sets']);
+        $reps          = implode(',', $formArray['reps']);
+        $references    = implode(',', $formArray['reference']);
+        $instructions  = implode(',', $formArray['instructions']);
 
-        if(!$check)
-        {   
-            $days          = implode(',',$request->days);
-            $exercise_name = implode(',',$request->exercise_name);
-            $sets          = implode(',',$request->sets);
-            $rep_range     = implode(',',$request->rep_range);
-            $reference     = implode(',',$request->reference);
-            $instructions  = implode(',',$request->instructions);
+        $existingWorkout = Workout::where('client_id', $clientID)->where('day', $day)->first();
 
-            $workout                = new Workout();
-            $workout->days          = $days;
-            $workout->workout_name  = $exercise_name;
+
+        if(!$existingWorkout)
+        {
+            $workout = new Workout();
+            $workout->client_id     = $clientID;
+            $workout->day           = $day;
+            $workout->exercise_name = $exerciseNames;
             $workout->sets          = $sets;
-            $workout->reps          = $rep_range;
-            $workout->reference     = $reference;
+            $workout->reps          = $reps;
+            $workout->reference     = $references;
             $workout->instructions  = $instructions;
-            $workout->client_id     = $id;
-
-            $workout_set = 1;
-
-            if($workout->save())
-            {
-                session()->flash('success','Workout Added!');
-                return redirect()->route('view.client',['id' => $id]);
-            }
-            else
-            {
-                session()->flash('error','Error! Please try again');
-                return redirect()->back();
-            }
+           if( $workout->save())
+           {
+             return response()->json(['message' => 'Workout Added!', 'status' => 'success']);
+           }
         }
         else
         {
-            session()->flash('error','Workout for this client already exists!');
-            return redirect()->route('view.client',['id' => $id]);
+            $existingWorkout->exercise_name = $exerciseNames;
+            $existingWorkout->sets          = $sets;
+            $existingWorkout->reps          = $reps;
+            $existingWorkout->reference     = $references;
+            $existingWorkout->instructions  = $instructions;
+
+            if ($existingWorkout->save()) {
+                return response()->json(['message' => 'Workout Updated!', 'status' => 'success']);
+            }
+            
+
+            
+
         }
+
+       
+
+       
     }
 
     public function edit_workout($id)
     {
         if($id)
         {
-            $client_id = $id; 
+            $trainer_id = Auth::guard('trainer')->user()->id;
+            $client     = Clients::select('id')->where('id', $id)->where('assigned_trainer',$trainer_id)->first();
             $workouts   = Workout::where('client_id',$id)->get();
 
-           
+        
             if ($workouts) 
             {
-                return view('backend.trainer.clients.edit-workout', ['workouts' => $workouts]);
+                $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday'];
+                return view('backend.trainer.clients.edit-workout',compact('daysOfWeek','client','workouts'));
             }
             
             else
@@ -312,4 +335,47 @@ class TrainerClientController extends Controller
             echo "Error";
         }
     }
+
+    public function ajax_delete_workout(Request $request)
+    {
+        $client_id = $request->input('client_id');
+        $exercise_name = $request->input('exercise_name');
+        $day = $request->input('day');
+
+        // Find the workout for the specific client and day
+        $workout = Workout::where('client_id', $client_id)->where('day', $day)->first();
+
+        if ($workout) {
+            // Get the exercises string from the workout
+            $exercises = $workout->exercise_name;
+
+            // Convert the exercises string to an array
+            $exercisesArray = $exercises;
+
+            // Find the index of the exercise to be deleted
+            $index = array_search($exercise_name, $exercisesArray);
+
+            if ($index !== false) {
+                // Remove the exercise from the exercises array
+                
+                unset($exercisesArray[$index]);
+
+                // Convert the exercises array back to a comma-separated string
+                $exercises_string = implode(',', $exercisesArray);
+
+        
+
+                // Update the workout's exercise_name field with the modified string
+                $workout->exercise_name = $exercises_string;
+                if($workout->save())
+                {
+                    return response()->json(['message' => 'Exercise deleted successfully','status' => 'success']);
+                }
+            }
+        }
+
+      
+    }
+
+    
 }

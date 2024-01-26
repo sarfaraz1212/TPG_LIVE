@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('height');
             $table->string('medical_condition')->nullable();
             $table->string('contact');
+            $table->string('address');
+            $table->string('profile');
             $table->integer('assigned_trainer');
             $table->timestamps();
             $table->integer('status')->default(1); 

@@ -121,6 +121,24 @@
 
               <div class="col-md-6">
                 <div class="mb-3">
+                  <label for="address" class="form-label">Address</label>
+                  <input type="text" class="form-control @error('address') is-invalid @enderror " id="address" name="address"  value="{{$client->address}}" >
+                   @error('address') <span class="invalid-feedback">{{$message}}</span> @enderror
+                </div>
+              </div>   
+            </div>
+  
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="mnum" class="form-label">Medical conditions </label>
+                  <input type="text" class="form-control  @error('medical_condition') is-invalid @enderror " id="medical_condition" name="medical_condition" placeholder="Leave empty if none">
+                   @error('medical_condition') <span class="invalid-feedback">{{$message}}</span> @enderror
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-3">
                   <label for="contact" class="form-label">Assign Trainer</label>
                   <select class="form-control @error('assigned_trainer') is-invalid @enderror" id="contact" name="assigned_trainer">    
                       <option value="" disabled >Select a trainer</option>                   
@@ -132,17 +150,7 @@
                   @error('assigned_trainer') <span class="invalid-feedback">{{$message}}</span> @enderror
                 </div>
               </div>
-              
-            </div>
-  
-            <div class="row">
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="mnum" class="form-label">Medical conditions </label>
-                  <input type="text" class="form-control  @error('medical_condition') is-invalid @enderror " id="medical_condition" name="medical_condition" placeholder="Leave empty if none">
-                   @error('medical_condition') <span class="invalid-feedback">{{$message}}</span> @enderror
-                </div>
-              </div>
+
             </div>
   
             
@@ -151,55 +159,56 @@
            
   
             <div class="row">
-              
               <div class="col-6">
-                @php
-                    $goalArray = explode(',',$client->goals)
-                @endphp
-                <fieldset class="form-group">
-                  <legend>Goal</legend>
-  
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" name="goal[]" id="muscleGain" value="MG" @if(in_array('MG',$goalArray)) checked @endif/>
-                    <label class="form-check-label" for="muscleGain">Muscle Gain</label>
-                  </div>
-  
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" name="goal[]" id="fatLoss" value="FL"  @if(in_array('FL',$goalArray)) checked @endif />
-                    <label class="form-check-label" for="fatLoss">Fat Loss</label>
-                  </div>
-  
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" name="goal[]" id="generalFitness" value="GF"  @if(in_array('GF',$goalArray)) checked @endif />
-                    <label class="form-check-label" for="generalFitness">General Fitness</label>
-                  </div>
-                </fieldset>
-                @error('goal') <span class="text-danger mt-3">{{$message}}</span> @enderror
+                  @php
+                      $goalArray = explode(',', $client->goals);
+                  @endphp
+                  <fieldset class="form-group">
+                      <legend>Goal</legend>
+
+                      <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="goal[]" id="muscleGain" value="MG" @if(in_array('Muscle Gain', $goalArray)) checked @endif/>
+                          <label class="form-check-label" for="muscleGain">Muscle Gain</label>
+                      </div>
+
+                      <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="goal[]" id="fatLoss" value="FL" @if(in_array('Fat Loss', $goalArray)) checked @endif />
+                          <label class="form-check-label" for="fatLoss">Fat Loss</label>
+                      </div>
+
+                      <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="checkbox" name="goal[]" id="generalFitness" value="GF" @if(in_array('General Fitness', $goalArray)) checked @endif />
+                          <label class="form-check-label" for="generalFitness">General Fitness</label>
+                      </div>
+                  </fieldset>
+                  @error('goal') <span class="text-danger mt-3">{{$message}}</span> @enderror
               </div>
-  
-              <div class="col-6  ">
-                <fieldset class="form-group">
-                  <legend>Gender</legend>
-  
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="male" value="M" @if($client->gender == 'M') checked @endif/>
-                    <label class="form-check-label" for="male">Male</label>
-                  </div>
-  
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="female" value="F" @if($client->gender == 'F') checked @endif/>
-                    <label class="form-check-label" for="female">Female</label>
-                  </div>
-  
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="other" value="O" @if($client->gender == 'O') checked @endif/>
-                    <label class="form-check-label" for="other">Other</label>
-                  </div>
-                </fieldset>
-                @error('gender') <span class="text-danger mt-3">{{$message}}</span> @enderror
+
+              <div class="col-6">
+                  <fieldset class="form-group">
+                      <legend>Gender</legend>
+                      
+
+
+                      <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="gender" id="male" value="M" @if($client->gender == 'Male') checked @endif/>
+                          <label class="form-check-label" for="male">Male</label>
+                      </div>
+
+                      <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="gender" id="female" value="F" @if($client->gender == 'Female') checked @endif/>
+                          <label class="form-check-label" for="female">Female</label>
+                      </div>
+
+                      <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="gender" id="other" value="O" @if($client->gender == 'Other') checked @endif/>
+                          <label class="form-check-label" for="other">Other</label>
+                      </div>
+                  </fieldset>
+                  @error('gender') <span class="text-danger mt-3">{{$message}}</span> @enderror
               </div>
-            </div>
-            
+          </div>
+
   
             <div class="row">
               <div class="col-12">

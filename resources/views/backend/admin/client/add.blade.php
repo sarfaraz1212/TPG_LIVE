@@ -85,7 +85,7 @@
             <div class="col-6">
                 <div class="mb-3">
                     <label for="contact" class="form-label ">Fee</label>
-                    <input type="text" id="fee" name="fee" class="form-control  @error('fee') is-invalid @enderror " placeholder="fee" value="{{ old('fee') }}">
+                    <input type="text" id="fee" name="fee" class="form-control  @error('fee') is-invalid @enderror "  value="{{ old('fee') }}">
                     @error('fee') <span class="invalid-feedback">{{$message}}</span> @enderror
                 </div>
             </div>
@@ -141,6 +141,24 @@
 
               <div class="col-md-6">
                 <div class="mb-3">
+                  <label for="address" class="form-label">Address</label>
+                  <input type="text" class="form-control @error('address') is-invalid @enderror " id="address" name="address"  value="{{ old('address') }}" >
+                   @error('address') <span class="invalid-feedback">{{$message}}</span> @enderror
+                </div>
+              </div>
+            </div>
+  
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="mnum" class="form-label">Medical conditions </label>
+                  <input type="text" class="form-control  @error('medical_condition') is-invalid @enderror " id="medical_condition" name="medical_condition" placeholder="Leave empty if none">
+                   @error('medical_condition') <span class="invalid-feedback">{{$message}}</span> @enderror
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-3">
                   <label for="contact" class="form-label">Assign Trainer</label>
                   <select class="form-control @error('assigned_trainer') is-invalid @enderror" id="contact" name="assigned_trainer">
                     
@@ -158,17 +176,7 @@
                   @error('assigned_trainer') <span class="invalid-feedback">{{$message}}</span> @enderror
                 </div>
               </div>
-              
-            </div>
-  
-            <div class="row">
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="mnum" class="form-label">Medical conditions </label>
-                  <input type="text" class="form-control  @error('medical_condition') is-invalid @enderror " id="medical_condition" name="medical_condition" placeholder="Leave empty if none">
-                   @error('medical_condition') <span class="invalid-feedback">{{$message}}</span> @enderror
-                </div>
-              </div>
+
             </div>
   
             

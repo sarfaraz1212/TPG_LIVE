@@ -20,10 +20,10 @@ class Workout extends Model
         return $days;
     }
 
-    public function getworkoutnameAttribute($value)
+    public function getexercisenameAttribute($value)
     {
-        $workoutname = explode(',',$value);
-        return $workoutname;
+        $exercise_name = explode(',',$value);
+        return $exercise_name;
     }
 
     public function getsetsAttribute($value)

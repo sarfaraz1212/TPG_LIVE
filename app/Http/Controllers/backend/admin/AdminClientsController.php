@@ -37,6 +37,7 @@ class AdminClientsController extends Controller
             'cpassword'         => 'required|same:password',
             'package'           => 'required|numeric',
             'fee'               => 'required|numeric',
+            'address'           => 'required',
             'startdate'         => 'date',
             'enddate'           => 'date|after:startdate',
             'bodyweight'        => 'required',
@@ -70,6 +71,7 @@ class AdminClientsController extends Controller
             $clients->enddate          = $request->enddate;
             $clients->bodyweight       = $request->bodyweight;
             $clients->height           = $request->height;
+            $clients->address          = $request->address;
             $clients->contact          = $request->contact;
             $clients->assigned_trainer = $request->assigned_trainer;
 
@@ -195,6 +197,7 @@ class AdminClientsController extends Controller
                 'enddate'           => 'date|after:startdate',
                 'bodyweight'        => 'required',
                 'height'            => 'required',
+                'address'           => 'required',
                 'medical_condition' => 'nullable|regex:/^[a-zA-Z\s]+$/',
                 'contact'           => ['required', 
                                         Rule::unique('clients', 'contact')->ignore($client->id),
@@ -223,6 +226,7 @@ class AdminClientsController extends Controller
             $client->height           = $request->height;
             $client->contact          = $request->contact;
             $client->assigned_trainer = $request->assigned_trainer;
+            $client->address          = $request->address;
 
            if( $client->save())
            {

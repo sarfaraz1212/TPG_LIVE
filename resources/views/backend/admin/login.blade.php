@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Modernize Free</title>
+  <title>Tpg</title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
   <link rel="stylesheet" href="{{asset('backend/admin/css/styles.min.css')}}" />
 </head>
@@ -20,10 +20,26 @@
           <div class="col-md-8 col-lg-6 col-xxl-3">
             <div class="card mb-0">
               <div class="card-body">
-                <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                  <img src="{{asset('backend/admin/images/logos/dark-logo.svg')}}" width="180" alt="">
+              <a href="./index.html" class="text-nowrap logo-img">  
+                    <h2 class=" text-center b-5" style="font-weight: 700;">The Physique Gym</h2>
                 </a>
-                <p class="text-center">Your Social Campaigns</p>
+                <p class="text-center">Admin Dashboard</p>
+
+                @if(session('success'))
+                  <div>
+                    <div class="alert alert-success" role="alert">
+                      <span style="color:black;">{{ session('success') }}</span>
+                    </div>
+                  </div>
+                @endif
+
+                @if(session('error'))
+                  <div>
+                    <div class="alert alert-danger" role="alert">
+                      <span style="color:black;">{{ session('error') }}!</span>
+                    </div>
+                  </div>
+                @endif
                 <form action="{{route('create.login')}}" method="post">
                   @csrf
                   <div class="mb-3">
